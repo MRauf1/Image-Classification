@@ -3,12 +3,12 @@ import torch.nn.functional as F
 
 
 class AlexNet(nn.Module):
-    
+
     def __init__(self):
 
         super(AlexNet, self).__init__()
 
-        self._conv = nn.Sequential(
+        self.conv = nn.Sequential(
 
             nn.Conv2d(in_channels = 3, out_channels = 96, kernel_size = 11, stride = 4),
             nn.ReLU(),
@@ -32,10 +32,10 @@ class AlexNet(nn.Module):
 
         )
 
-        self._fc = nn.Sequential(
+        self.fc = nn.Sequential(
 
             nn.Dropout(p = 0.5),
-            nn.Linear(in_features = 4096, out_features = 4096),
+            nn.Linear(in_features = 256 * 6 * 6, out_features = 4096),
             nn.ReLU(),
 
             nn.Dropout(p = 0.5),
@@ -51,22 +51,22 @@ class AlexNet(nn.Module):
 
     def init_parameters(self):
         """ Initialize the weights and biases as described in the paper """
-        for layer in self._conv:
+        for layer in self.conv:
             if(isinstance(layer, nn.Conv2d)):
                 nn.init.normal_(layer.weight, mean = 0, std = 0.01)
                 nn.init.constant_(layer.bias, 0)
 
-        nn.init.constant_(self.net[4].bias, 1)
-        nn.init.constant_(self.net[10].bias, 1)
-        nn.init.constant_(self.net[12].bias, 1)
+        nn.init.constant_(self.conv[4].bias, 1)
+        nn.init.constant_(self.conv[10].bias, 1)
+        nn.init.constant_(self.conv[12].bias, 1)
 
-        for layer in self._fc:
+        for layer in self.fc:
             if(isinstance(layer, nn.Linear)):
                 nn.init.constant_(layer.bias, 1)
 
 
     def forward(self, x):
-        x = self._conv(x)
-        x = x.view(-1, 4096)
-        x = self._fc(x)
+        x = self.conv(x)
+        x = x.view(-1, 256 * 6 * 6)
+        x = self.fc(x)
         return x

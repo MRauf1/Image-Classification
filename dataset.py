@@ -9,8 +9,8 @@ from PIL import Image
 class ImageClassificationDataset(Dataset):
     """ Image Classification dataset """
 
-    def __init__(self, images_folder_path, labels_path, image_size = 227,
-                    mode = "train", train_val_test_ratio = [0.7, 0.1, 0.2]):
+    def __init__(self, images_folder_path, labels_path, mode, image_size = 227,
+                        train_val_test_ratio = [0.7, 0.1, 0.2]):
         """
         Args:
             images_folder_path (string): Path to the folder with the images.
@@ -58,12 +58,11 @@ class ImageClassificationDataset(Dataset):
 
     def __getitem__(self, index):
 
-        # Read in the image and resize to 227x227
-        image = Image.open(join(self._images_folder_path, self._image_names[index])).convert("RGB")
-        image = self._image_transforms(image)
+        label_num = self._labels[index]
+        label = torch.tensor([int(label_num)], dtype = torch.int64)
 
-        # For the dataset, the image number is located between indices 15 and 23
-        image_number = int(self._image_names[index][15:23])
-        label = self._labels[image_number]
+        image_name = "ILSVRC2012_val_" + str(label_num.zfill(8)) + ".JPEG"
+        image = Image.open(join(self._images_folder_path, image_name)).convert("RGB")
+        image = self._image_transforms(image)
 
         return image, label
