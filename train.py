@@ -48,7 +48,7 @@ def train(train_dataset, val_dataset, configs):
 
             running_loss += loss.item()
 
-        print("[%d, %5d] loss: %.4f" %
+        print("[%d] loss: %.4f" %
                   (epoch + 1, running_loss / train_dataset.__len__()))
 
         model.eval()
