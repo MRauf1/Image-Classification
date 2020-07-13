@@ -1,5 +1,5 @@
-images_folder_path : ImageNet/ILSVRC2012_img_val/
-labels_path : ImageNet/ILSVRC2012_validation_ground_truth.txt
+images_folder_path : $TRAINML_DATA_PATH/ILSVRC2012_img_val/
+labels_path : $TRAINML_DATA_PATH/ILSVRC2012_validation_ground_truth.txt
 
 epochs : 10
 batch_size : 32
