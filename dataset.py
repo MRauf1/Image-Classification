@@ -60,7 +60,7 @@ class ImageClassificationDataset(Dataset):
 
         label = torch.tensor([int(self._labels[index])], dtype = torch.int64)
 
-        image_name = "ILSVRC2012_val_" + str(index).zfill(8) + ".JPEG"
+        image_name = "ILSVRC2012_val_" + str(index + 1).zfill(8) + ".JPEG"
         image = Image.open(join(self._images_folder_path, image_name)).convert("RGB")
         image = self._image_transforms(image)
 
