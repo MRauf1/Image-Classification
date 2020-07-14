@@ -66,6 +66,7 @@ def train(train_dataset, val_dataset, configs):
         print("Accuracy of the network on the %d test images: %.4f %%" %
                 (val_dataset.__len__(), 100. * correct / val_dataset.__len__()))
 
+    torch.save(model.state_dict(), "/opt/output/model.pt")
 
 
 if __name__ == "__main__":
